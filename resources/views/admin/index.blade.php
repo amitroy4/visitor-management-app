@@ -43,8 +43,8 @@
                     <div class="d-flex justify-content-around">
                         <!-- Button trigger modal -->
 
-                        <button class="text-primary border-0 bg-transparent p-0 delete-btn" data-toggle="modal"
-                            data-target="#exampleModal" id="editModal" data-visitor-id="{{$visitor->id}}">
+                        <button class="text-primary border-0 bg-transparent p-0 delete-btn editModal" data-toggle="modal"
+                            data-target="#exampleModal" data-visitor-id="{{$visitor->id}}">
                             Edit
                         </button>
                         <form action="{{route('visitor.destroy',$visitor->id)}}" method="POST">
@@ -145,7 +145,7 @@
 @push('script')
 <script>
     $(document).ready(function () {
-        $('#editModal').on('click', function (event) {
+        $('.editModal').on('click', function (event) {
             event.preventDefault(); // Prevent form from submitting the traditional way
             var visitorId = $(this).data('visitor-id');
             console.log(visitorId);
@@ -157,9 +157,17 @@
                     id: visitorId,
                 }, // Serialize form data
                 success: function (response) {
-                    console.log(response.data.name);
+                    console.log(response.data);
 
+                    $('#visit_date').val(response.data.visit_date);
+                    $('#visitor_number').val(response.data.visitor_number);
                     $('#visitorName').val(response.data.name);
+                    $('#mobileNumber').val(response.data.contact_number);
+                    $('#purposseOfVisit').val(response.data.purposse_of_visit);
+                    $('#appartment').val(response.data.appartment);
+                    $('#unit_number').val(response.data.unit_number);
+                    $('#checkin').val(response.data.checkin);
+                    $('#checkout').val(response.data.checkout);
                     // Replace `property` with the actual property name from the response object
 
 
