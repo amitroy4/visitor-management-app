@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
 Route::post('/visitor/store', [VisitorController::class, 'store'])->name('visitor.store');
 Route::delete('/dashboard/destroy/{id}', [VisitorController::class, 'destroy'])->name('visitor.destroy');
 Route::get('/dashboard/visitor/edit', [VisitorController::class, 'edit'])->name('visitor.edit');
+Route::post('/dashboard/visitor/update', [VisitorController::class, 'update'])->name('visitor.update');
 
 
 require __DIR__.'/auth.php';

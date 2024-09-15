@@ -23,7 +23,7 @@ class VisitorController extends Controller
             'appartment'=>'required|string|max:20',
             'unit_number'=>'required|string|max:20',
             'checkin'=>'required|string|max:20',
-            'checkout'=>'nullable|time|max:20',
+            'checkout'=>'nullable|string|max:20',
             'visitor_number'=>'required|string|max:20',
         ]);
 
@@ -33,6 +33,52 @@ class VisitorController extends Controller
 
         return redirect()->back()->with('success', 'Guest check-in recorded successfully!');
     }
+
+
+
+    public function update(Request $request)
+    {
+            // Validate the incoming data
+        $request->validate([
+            'visit_date' => 'nullable|string|max:255',
+            'name' => 'required|string|max:120',
+            'contact_number'=> 'required|string|max:20',
+            'purposse_of_visit'=>'required|string|max:120',
+            'appartment'=>'required|string|max:20',
+            'unit_number'=>'required|string|max:20',
+            'checkin'=>'required|string|max:20',
+            'checkout'=>'nullable|string|max:20',
+            'visitor_number'=>'required|string|max:20',
+        ]);
+
+        // Find the visitor by ID
+        $visitor = Visitor::findOrFail($request->id);
+
+        // Update the name field
+        $visitor->name = $request->name;
+        $visitor->contact_number = $request->contact_number;
+        $visitor->visit_date = $request->visit_date;
+        $visitor->purposse_of_visit = $request->purposse_of_visit;
+        $visitor->appartment = $request->appartment;
+        $visitor->unit_number = $request->unit_number;
+        $visitor->checkin = $request->checkin;
+        $visitor->checkout = $request->checkout;
+
+        // Save the changes
+        $visitor->save();
+
+        // Return a success response
+        return response()->json([
+            'message' => 'Visitor name updated successfully!',
+            'data' => $visitor,
+        ]);
+    }
+
+
+
+
+
+
 
     public function destroy(string $id)
     {

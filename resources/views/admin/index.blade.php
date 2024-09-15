@@ -43,8 +43,8 @@
                     <div class="d-flex justify-content-around">
                         <!-- Button trigger modal -->
 
-                        <button class="text-primary border-0 bg-transparent p-0 delete-btn editModal" data-toggle="modal"
-                            data-target="#exampleModal" data-visitor-id="{{$visitor->id}}">
+                        <button class="text-primary border-0 bg-transparent p-0 delete-btn editModal"
+                            data-toggle="modal" data-target="#exampleModal" data-visitor-id="{{$visitor->id}}">
                             Edit
                         </button>
                         <form action="{{route('visitor.destroy',$visitor->id)}}" method="POST">
@@ -77,9 +77,9 @@
             </div>
             <div class="modal-body">
                 <div class='rounded-4 shadow p-3 mb-5 bg-body-tertiary bg-light'>
-                    <form action="{{route('visitor.store')}}" method="POST">
+                    <form id="visitorForm" method="POST">
                         @csrf
-
+                        <input type="" name="visitiorId" id="visitorId">
                         <div class="row justify-content-between">
                             <div class="mb-3 text-secondary col-6">
                                 <label for="exampleInputEmail1" class="form-label">তারিখ:</label>
@@ -131,7 +131,8 @@
                             </div>
                         </div>
                         <div class="row d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary w-20 " style="width: 20%;">Submit</button>
+                            <button type="submit" class="btn btn-primary w-20 updateModal"
+                                style="width: 20%;">Update</button>
                         </div>
 
                     </form>
@@ -143,8 +144,60 @@
 
 @endsection
 @push('script')
+
 <script>
+    // $("#visitorForm").on('submit', function (e) {
+    //     e.preventDefault();
+    //     const data = new FormData(this);
+    //     // const data = $(this).serialize()
+    //     console.log('Sdata: ', data);
+
+    //     // Function to convert serialized form data to an array of objects
+    //     function serializeToArray(serializedString) {
+    //         const result = [];
+    //         const pairs = serializedString.split('&');
+
+    //         for (const pair of pairs) {
+    //             const [key, value] = pair.split('=');
+    //             if (key) {
+    //                 result.push({
+    //                     key: decodeURIComponent(key),
+    //                     value: decodeURIComponent(value || '')
+    //                 });
+    //             }
+    //         }
+
+    //         return result;
+    //     }
+
+
+    //     // Convert serialized data to array of objects
+    //     const dataArray = serializeToArray(data);
+
+    //     console.log(dataArray);
+
+    //     $.ajax({
+    //         url: '{{ route("visitor.update") }}',
+    //         method: 'post',
+    //         data: dataArray,
+    //         cache: false,
+    //         processData: false,
+    //         contentType: false,
+    //         success: function (res) {
+    //             if (res.status == 200) {
+    //                 $("#categoryModalEdit").modal('hide');
+    //                 location.reload();
+    //                 $.Notification.autoHideNotify('success', 'top right', 'Success', res.message);
+    //             } else {
+    //                 $.Notification.autoHideNotify('danger', 'top right', 'Danger', res.message);
+
+    //             }
+    //         }
+    //     })
+
+    // });
     $(document).ready(function () {
+
         $('.editModal').on('click', function (event) {
             event.preventDefault(); // Prevent form from submitting the traditional way
             var visitorId = $(this).data('visitor-id');
@@ -157,9 +210,10 @@
                     id: visitorId,
                 }, // Serialize form data
                 success: function (response) {
-                    console.log(response.data);
+                    // console.log(response.data);
 
                     $('#visit_date').val(response.data.visit_date);
+                    $('#visitorId').val(response.data.id);
                     $('#visitor_number').val(response.data.visitor_number);
                     $('#visitorName').val(response.data.name);
                     $('#mobileNumber').val(response.data.contact_number);
@@ -168,11 +222,6 @@
                     $('#unit_number').val(response.data.unit_number);
                     $('#checkin').val(response.data.checkin);
                     $('#checkout').val(response.data.checkout);
-                    // Replace `property` with the actual property name from the response object
-
-
-                    // $('#response').html('<p>' + response.message + '</p><pre>' + JSON
-                    //     .stringify(response.data, null, 2) + '</pre>');
                 },
                 error: function (xhr) {
                     $('#response').html('<p>Error: ' + xhr.status + ' ' + xhr
@@ -180,6 +229,8 @@
                 }
             });
         });
+
+
     });
 
 </script>
