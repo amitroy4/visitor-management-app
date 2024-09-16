@@ -27,7 +27,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($visitors->reverse() as $visitor)
+            @foreach ($visitors as $visitor)
             <tr>
                 <th scope="row">{{ $visitor->id }}</th>
                 <td>{{ $visitor->visit_date }}</td>
@@ -59,7 +59,13 @@
             </tr>
             @endforeach
         </tbody>
+
     </table>
+
+    <!-- Pagination Links -->
+    <div class="d-flex justify-content-center">
+        {{ $visitors->links('pagination::bootstrap-4') }}
+    </div>
 
 
 </div>

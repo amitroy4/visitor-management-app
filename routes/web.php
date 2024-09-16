@@ -14,7 +14,7 @@ Route::get('/checkin', function () {
 });
 
 Route::get('/dashboard', function () {
-    $visitors = Visitor::all();
+    $visitors = Visitor::orderBy('id', 'desc')->paginate(10);
     return view('admin.index',compact('visitors'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
