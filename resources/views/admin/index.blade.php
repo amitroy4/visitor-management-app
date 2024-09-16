@@ -9,8 +9,10 @@
                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
     </div>
 
+    <button onclick="exportToPDF()">Export to PDF</button> <button onclick="exportToExcel()">Export to Excel</button>
+
     <!-- Content Row -->
-    <table class="table table-striped">
+    <table class="table table-striped table-to-convert" id="table-to-excel">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -43,14 +45,14 @@
                     <div class="d-flex justify-content-around">
                         <!-- Button trigger modal -->
 
-                        <button class="text-primary border-0 bg-transparent p-0 delete-btn editModal"
+                        <button class="text-primary delete-btn editModal btn btn-warning"
                             data-toggle="modal" data-target="#exampleModal" data-visitor-id="{{$visitor->id}}">
                             Edit
                         </button>
                         <form action="{{route('visitor.destroy',$visitor->id)}}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button class="text-danger border-0 bg-transparent p-0 delete-btn">
+                            <button class="text-secondary delete-btn btn btn-danger">
                                 Delete
                             </button>
                         </form>
@@ -207,5 +209,70 @@
 
     });
 
+    // function exportToPDF() {
+    //     const {
+    //         jsPDF
+    //     } = window.jspdf;
+    //     const doc = new jsPDF();
+
+    //     // Add the custom Bangla font (after converting it to base64)
+    //     doc.addFileToVFS("NotoSansBengali.ttf", "BASE64_STRING_OF_TTF_FILE");
+    //     doc.addFont("NotoSansBengali.ttf", "NotoSansBengali", "normal");
+
+    //     // Set the font for Bangla text
+    //     doc.setFont("NotoSansBengali");
+
+    //     doc.autoTable({
+    //         html: '.table-to-convert'
+    //     });
+    //     doc.save('TableData.pdf');
+    // }
+
+    function exportToExcel() {
+        var table = document.getElementById('table-to-excel');
+        var wb = XLSX.utils.table_to_book(table, {
+            sheet: "Sheet1"
+        });
+        XLSX.writeFile(wb, 'TableData.xlsx');
+    }
+
+    async function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add the custom Bangla font (base64-encoded font string)
+            const base64Font = await fetchFont("/admin/Nikosh.ttf"); // Path to the TTF file
+            doc.addFileToVFS("Nikosh.ttf", base64Font);
+            doc.addFont("Nikosh.ttf", "Nikosh", "normal");
+
+            // Set the font for Bangla text
+            doc.setFont("Nikosh");
+
+            // Render the table to the PDF
+            doc.autoTable({
+                html: '.table-to-convert',
+                styles: {
+                    font: 'Nikosh'
+                }
+            });
+
+            // Save the generated PDF
+            doc.save('TableData.pdf');
+        }
+
+        // Helper function to load the TTF file and convert it to base64
+        async function fetchFont(url) {
+            const response = await fetch(url);
+            const buffer = await response.arrayBuffer();
+            let binary = '';
+            const bytes = new Uint8Array(buffer);
+            for (let i = 0; i < bytes.byteLength; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return window.btoa(binary); // Convert to base64
+        }
+
 </script>
+
+
 @endpush
