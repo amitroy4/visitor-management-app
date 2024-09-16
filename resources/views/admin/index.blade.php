@@ -192,8 +192,9 @@
                 type: 'POST',
                 data: formData,
                 success: function (response) {
+                    $('.editModal').modal('hide');
                     // Show a success message or close the modal
-                    alert('Visitor data updated successfully!');
+                    // alert('Visitor data updated successfully!');
                     location.reload(); // Optionally reload the page to see the updated data
                 },
                 error: function (xhr) {
