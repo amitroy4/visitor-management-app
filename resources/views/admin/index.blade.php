@@ -79,7 +79,7 @@
                 <div class='rounded-4 shadow p-3 mb-5 bg-body-tertiary bg-light'>
                     <form id="visitorForm" method="POST">
                         @csrf
-                        <input type="" name="visitiorId" id="visitorId">
+                        <input type="hidden" name="visitiorId" id="visitorId">
                         <div class="row justify-content-between">
                             <div class="mb-3 text-secondary col-6">
                                 <label for="exampleInputEmail1" class="form-label">তারিখ:</label>
@@ -146,74 +146,21 @@
 @push('script')
 
 <script>
-    // $("#visitorForm").on('submit', function (e) {
-    //     e.preventDefault();
-    //     const data = new FormData(this);
-    //     // const data = $(this).serialize()
-    //     console.log('Sdata: ', data);
-
-    //     // Function to convert serialized form data to an array of objects
-    //     function serializeToArray(serializedString) {
-    //         const result = [];
-    //         const pairs = serializedString.split('&');
-
-    //         for (const pair of pairs) {
-    //             const [key, value] = pair.split('=');
-    //             if (key) {
-    //                 result.push({
-    //                     key: decodeURIComponent(key),
-    //                     value: decodeURIComponent(value || '')
-    //                 });
-    //             }
-    //         }
-
-    //         return result;
-    //     }
-
-
-    //     // Convert serialized data to array of objects
-    //     const dataArray = serializeToArray(data);
-
-    //     console.log(dataArray);
-
-    //     $.ajax({
-    //         url: '{{ route("visitor.update") }}',
-    //         method: 'post',
-    //         data: dataArray,
-    //         cache: false,
-    //         processData: false,
-    //         contentType: false,
-    //         success: function (res) {
-    //             if (res.status == 200) {
-    //                 $("#categoryModalEdit").modal('hide');
-    //                 location.reload();
-    //                 $.Notification.autoHideNotify('success', 'top right', 'Success', res.message);
-    //             } else {
-    //                 $.Notification.autoHideNotify('danger', 'top right', 'Danger', res.message);
-
-    //             }
-    //         }
-    //     })
-
-    // });
     $(document).ready(function () {
+        let idpass;
 
         $('.editModal').on('click', function (event) {
-            event.preventDefault(); // Prevent form from submitting the traditional way
+            event.preventDefault();
             var visitorId = $(this).data('visitor-id');
-            console.log(visitorId);
-
             $.ajax({
                 url: '{{ route("visitor.edit") }}',
                 type: 'get',
                 data: {
-                    id: visitorId,
-                }, // Serialize form data
+                    id: visitorId
+                },
                 success: function (response) {
-                    // console.log(response.data);
-
-                    $('#visit_date').val(response.data.visit_date);
                     $('#visitorId').val(response.data.id);
+                    $('#visit_date').val(response.data.visit_date);
                     $('#visitor_number').val(response.data.visitor_number);
                     $('#visitorName').val(response.data.name);
                     $('#mobileNumber').val(response.data.contact_number);
@@ -224,12 +171,32 @@
                     $('#checkout').val(response.data.checkout);
                 },
                 error: function (xhr) {
-                    $('#response').html('<p>Error: ' + xhr.status + ' ' + xhr
-                        .statusText + '</p>');
+                    console.error('Error: ' + xhr.status + ' ' + xhr.statusText);
                 }
             });
         });
+        $('#visitorForm').on('submit', function (event) {
+            event.preventDefault(); // Prevent traditional form submission
 
+            var formData = $(this).serialize(); // Serialize the form data
+            // console.log(formData);
+
+            $.ajax({
+                url: '{{ route("visitor.update") }}',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    // Show a success message or close the modal
+                    alert('Visitor data updated successfully!');
+                    location.reload(); // Optionally reload the page to see the updated data
+                },
+                error: function (xhr) {
+                    // Handle errors
+                    console.error('Error: ' + xhr.status + ' ' + xhr.statusText);
+                    alert('An error occurred while updating data.');
+                }
+            });
+        });
 
     });
 

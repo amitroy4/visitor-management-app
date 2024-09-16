@@ -38,6 +38,7 @@ class VisitorController extends Controller
 
     public function update(Request $request)
     {
+        // dd($request->all());
             // Validate the incoming data
         $request->validate([
             'visit_date' => 'nullable|string|max:255',
@@ -52,7 +53,8 @@ class VisitorController extends Controller
         ]);
 
         // Find the visitor by ID
-        $visitor = Visitor::findOrFail($request->id);
+        $visitor = Visitor::findOrFail($request->visitiorId);
+        // dd($visitor);
 
         // Update the name field
         $visitor->name = $request->name;
