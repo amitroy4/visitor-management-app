@@ -28,6 +28,7 @@ Route::post('/visitor/store', [VisitorController::class, 'store'])->name('visito
 Route::delete('/dashboard/destroy/{id}', [VisitorController::class, 'destroy'])->name('visitor.destroy');
 Route::get('/dashboard/visitor/edit', [VisitorController::class, 'edit'])->name('visitor.edit');
 Route::post('/dashboard/visitor/update', [VisitorController::class, 'update'])->name('visitor.update');
+Route::get('/dashboard/visitor/search', [VisitorController::class, 'search'])->name('visitor.search');
 
 
 require __DIR__.'/auth.php';

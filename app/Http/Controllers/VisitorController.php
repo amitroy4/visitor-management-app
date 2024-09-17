@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
 
+use function Illuminate\Log\log;
+
 class VisitorController extends Controller
 {
     public function checkin()
@@ -65,6 +67,7 @@ class VisitorController extends Controller
         $visitor->unit_number = $request->unit_number;
         $visitor->checkin = $request->checkin;
         $visitor->checkout = $request->checkout;
+        $visitor->visitor_number = $request->visitor_number;
 
         // Save the changes
         $visitor->save();
@@ -97,6 +100,17 @@ class VisitorController extends Controller
 
         // Return a response (could be JSON or any other format)
         return response()->json(['message' => 'Data received', 'data' => $data]);
+    }
+
+
+    // Search name
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $visitors = Visitor::where('name', 'LIKE', "%{$query}%")->get(); // Adjust 'column_name' and 'YourModel'
+
+        return response()->json($visitors);
     }
 
 }

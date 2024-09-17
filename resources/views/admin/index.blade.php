@@ -9,66 +9,89 @@
                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
     </div>
 
-    <button onclick="exportToPDF()">Export to PDF</button> <button onclick="exportToExcel()">Export to Excel</button>
 
-    <!-- Content Row -->
-    <table class="table table-striped table-to-convert" id="table-to-excel">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">তারিখ</th>
-                <th scope="col">নাম</th>
-                <th scope="col">মোবাইল নাম্বার</th>
-                <th scope="col">পরিদর্শনের উদ্দেশ্য</th>
-                <th scope="col">অ্যাপার্টমেন্ট</th>
-                <th scope="col">ইউনিট নাম্বার</th>
-                <th scope="col">চেক ইন</th>
-                <th scope="col">চেক আউট</th>
-                <th scope="col">ভিজিটর নাম্বার</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($visitors as $visitor)
-            <tr>
-                <th scope="row">{{ $visitor->id }}</th>
-                <td>{{ $visitor->visit_date }}</td>
-                <td>{{ $visitor->name }}</td>
-                <td>{{ $visitor->contact_number }}</td>
-                <td>{{ $visitor->purposse_of_visit }}</td>
-                <td>{{ $visitor->appartment }}</td>
-                <td>{{ $visitor->unit_number }}</td>
-                <td>{{ $visitor->checkin }}</td>
-                <td>{{ $visitor->checkout }}</td>
-                <td>{{ $visitor->visitor_number }}</td>
-                <td>
-                    <div class="d-flex justify-content-around">
-                        <!-- Button trigger modal -->
+    <div class="card">
+        <h5 class="card-header">
+            <div class="row justify-content-between ">
+                <div class="form-group mx-sm-3">
+                    <input type="text" class="form-control" id="searchName" placeholder="Name">
+                </div>
+                <div class="form-group mx-sm-3">
+                    <label for="inputPassword2" class="sr-only">Search</label>
+                    <input type="text" class="form-control " id="search" placeholder="Search">
+                </div>
+                <div class="form-group mx-sm-3">
+                    <label for="inputPassword2" class="sr-only">Search</label>
+                    <input type="text" class="form-control " id="search" placeholder="Search">
+                </div>
+                <div>
+                    <button onclick="exportToPDF()" class="btn btn-info">Export to PDF</button> <button
+                        onclick="exportToExcel()" class="btn btn-secondary">Export to Excel</button>
+                </div>
+            </div>
+        </h5>
 
-                        <button class="text-primary delete-btn editModal btn btn-warning"
-                            data-toggle="modal" data-target="#exampleModal" data-visitor-id="{{$visitor->id}}">
-                            Edit
-                        </button>
-                        <form action="{{route('visitor.destroy',$visitor->id)}}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="text-secondary delete-btn btn btn-danger">
-                                Delete
-                            </button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
 
-    </table>
+        <div class="card-body">
+            <!-- Content Row -->
+            <table class="table table-striped table-to-convert" id="table-to-excel">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">তারিখ</th>
+                        <th scope="col">নাম</th>
+                        <th scope="col">মোবাইল নাম্বার</th>
+                        <th scope="col">পরিদর্শনের উদ্দেশ্য</th>
+                        <th scope="col">অ্যাপার্টমেন্ট</th>
+                        <th scope="col">ইউনিট নাম্বার</th>
+                        <th scope="col">চেক ইন</th>
+                        <th scope="col">চেক আউট</th>
+                        <th scope="col">ভিজিটর নাম্বার</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($visitors as $visitor)
+                    <tr>
+                        <th scope="row">{{ $visitor->id }}</th>
+                        <td>{{ $visitor->visit_date }}</td>
+                        <td>{{ $visitor->name }}</td>
+                        <td>{{ $visitor->contact_number }}</td>
+                        <td>{{ $visitor->purposse_of_visit }}</td>
+                        <td>{{ $visitor->appartment }}</td>
+                        <td>{{ $visitor->unit_number }}</td>
+                        <td>{{ $visitor->checkin }}</td>
+                        <td>{{ $visitor->checkout }}</td>
+                        <td>{{ $visitor->visitor_number }}</td>
+                        <td>
+                            <div class="d-flex justify-content-around">
+                                <!-- Button trigger modal -->
 
-    <!-- Pagination Links -->
-    <div class="d-flex justify-content-center">
-        {{ $visitors->links('pagination::bootstrap-4') }}
+                                <button class="text-primary editModal btn" data-toggle="modal"
+                                    data-target="#exampleModal" data-visitor-id="{{$visitor->id}}">
+                                    <i class="fa-solid fa-pen-to-square text-primary"></i>
+                                </button>
+                                <form action="{{route('visitor.destroy',$visitor->id)}}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="text-secondary delete-btn btn">
+                                        <i class="fa-solid fa-trash-can text-danger"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+
+            </table>
+
+            <!-- Pagination Links -->
+            <div class="d-flex justify-content-center">
+                {{ $visitors->links('pagination::bootstrap-4') }}
+            </div>
+        </div>
     </div>
-
 
 </div>
 
@@ -160,6 +183,7 @@
         $('.editModal').on('click', function (event) {
             event.preventDefault();
             var visitorId = $(this).data('visitor-id');
+            window.alert(visitorId);
             $.ajax({
                 url: '{{ route("visitor.edit") }}',
                 type: 'get',
@@ -187,7 +211,7 @@
             event.preventDefault(); // Prevent traditional form submission
 
             var formData = $(this).serialize(); // Serialize the form data
-            // console.log(formData);
+            console.log(formData);
 
             $.ajax({
                 url: '{{ route("visitor.update") }}',
@@ -209,68 +233,156 @@
 
     });
 
-    // function exportToPDF() {
-    //     const {
-    //         jsPDF
-    //     } = window.jspdf;
-    //     const doc = new jsPDF();
-
-    //     // Add the custom Bangla font (after converting it to base64)
-    //     doc.addFileToVFS("NotoSansBengali.ttf", "BASE64_STRING_OF_TTF_FILE");
-    //     doc.addFont("NotoSansBengali.ttf", "NotoSansBengali", "normal");
-
-    //     // Set the font for Bangla text
-    //     doc.setFont("NotoSansBengali");
-
-    //     doc.autoTable({
-    //         html: '.table-to-convert'
-    //     });
-    //     doc.save('TableData.pdf');
-    // }
-
     function exportToExcel() {
         var table = document.getElementById('table-to-excel');
         var wb = XLSX.utils.table_to_book(table, {
             sheet: "Sheet1"
         });
+
+        // Get the worksheet
+        var ws = wb.Sheets['Sheet1'];
+
+        // Get the range of the sheet
+        var range = XLSX.utils.decode_range(ws['!ref']);
+
+        // Iterate through each row and remove the last column
+        for (var row = range.s.r; row <= range.e.r; row++) {
+            // Construct the cell address of the last column
+            var cell_address = XLSX.utils.encode_cell({
+                r: row,
+                c: range.e.c
+            });
+            // Delete the last cell
+            delete ws[cell_address];
+        }
+
+        // Update the sheet's range (remove the last column from the range)
+        range.e.c--;
+        ws['!ref'] = XLSX.utils.encode_range(range);
+
+        // Write the modified workbook to a file
         XLSX.writeFile(wb, 'TableData.xlsx');
     }
 
     async function exportToPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+        const {
+            jsPDF
+        } = window.jspdf;
+        const doc = new jsPDF();
 
-            // Add the custom Bangla font (base64-encoded font string)
-            const base64Font = await fetchFont("/admin/Nikosh.ttf"); // Path to the TTF file
-            doc.addFileToVFS("Nikosh.ttf", base64Font);
-            doc.addFont("Nikosh.ttf", "Nikosh", "normal");
+        // Get table data
+        const table = document.querySelector('.table-to-convert');
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
 
-            // Set the font for Bangla text
-            doc.setFont("Nikosh");
+        // Extract data, excluding the last column
+        const data = rows.map(row => {
+            const cells = Array.from(row.querySelectorAll('td, th'));
+            return cells.slice(0, -1).map(cell => cell.textContent.trim());
+        });
 
-            // Render the table to the PDF
-            doc.autoTable({
-                html: '.table-to-convert',
-                styles: {
-                    font: 'Nikosh'
-                }
-            });
+        // Get header data
+        const headers = Array.from(table.querySelectorAll('thead th'))
+            .slice(0, -1)
+            .map(header => header.textContent.trim());
 
-            // Save the generated PDF
-            doc.save('TableData.pdf');
-        }
 
-        // Helper function to load the TTF file and convert it to base64
-        async function fetchFont(url) {
-            const response = await fetch(url);
-            const buffer = await response.arrayBuffer();
-            let binary = '';
-            const bytes = new Uint8Array(buffer);
-            for (let i = 0; i < bytes.byteLength; i++) {
-                binary += String.fromCharCode(bytes[i]);
+        // Add the custom Bangla font (base64-encoded font string)
+        const base64Font = await fetchFont("/admin/TiroBangla-Regular.ttf"); // Path to the TTF file
+        doc.addFileToVFS("Nikosh.ttf", base64Font);
+        doc.addFont("Nikosh.ttf", "Nikosh", "normal");
+
+        // Set the font for Bangla text
+        doc.setFont("Nikosh");
+
+        // Render the table to the PDF
+        doc.autoTable({
+            head: [
+                headers
+            ],
+            body: data,
+            styles: {
+                font: 'Nikosh'
             }
-            return window.btoa(binary); // Convert to base64
+        });
+
+        // Save the generated PDF
+        doc.save('TableData.pdf');
+    }
+
+    // Helper function to load the TTF file and convert it to base64
+    async function fetchFont(url) {
+        const response = await fetch(url);
+        const buffer = await response.arrayBuffer();
+        let binary = '';
+        const bytes = new Uint8Array(buffer);
+        for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
         }
+        return window.btoa(binary); // Convert to base64
+    }
+
+
+    // Jquery live search
+    // $(document).ready(function(){
+    //     $("#searchName").keyup(function(){
+    //         _this = this;
+    //         $.each($("#searchTable tr"), function() {
+    //             if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1){
+    //                 $(this).hide();
+    //             }else{
+    //                 $(this).show();
+    //             }
+    //         });
+    //     });
+    // });
+    $('#searchName').on('keyup', function () {
+        let query = $(this).val();
+
+        $.ajax({
+            url: "{{ route('visitor.search') }}",
+            method: 'GET',
+            data: {
+                query: query
+            },
+            success: function (data) {
+                let rows = '';
+                $.each(data, function (index, visitor) {
+                    rows += `
+                        <tr>
+                        <th scope="row">${ visitor.id }</th>
+                        <td>${ visitor.visit_date }</td>
+                        <td>${ visitor.name }</td>
+                        <td>${ visitor.contact_number }</td>
+                        <td>${visitor.purposse_of_visit }</td>
+                        <td>${ visitor.appartment }</td>
+                        <td>${visitor.unit_number }</td>
+                        <td>${ visitor.checkin }</td>
+                        <td>${ visitor.checkout }</td>
+                        <td>${ visitor.visitor_number }</td>
+                        <td>
+                            <div class="d-flex justify-content-around">
+                                <!-- Button trigger modal -->
+
+                                <button class="text-primary editModal btn" data-toggle="modal"
+                                    data-target="#exampleModal" data-visitor-id="${visitor.id}">
+                                    <i class="fa-solid fa-pen-to-square text-primary"></i>
+                                    ${visitor.id}
+                                </button>
+                                <form action="{{route('visitor.destroy','')}}/${visitor.id}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="text-secondary delete-btn btn">
+                                        <i class="fa-solid fa-trash-can text-danger"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr> `;
+                });
+                $('.table-to-convert tbody').html(rows);
+            }
+        });
+    });
 
 </script>
 
