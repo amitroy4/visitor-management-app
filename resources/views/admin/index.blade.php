@@ -72,7 +72,7 @@
                                     data-target="#exampleModal" data-visitor-id="{{$visitor->id}}">
                                     <i class="fa-solid fa-pen-to-square text-primary"></i>
                                 </button>
-                                <form action="{{route('visitor.destroy',$visitor->id)}}" method="POST">
+                                <form action="{{route('visitor.destroy',$visitor->id)}}" method="POST" onsubmit="return confirmDelete()">
                                     @csrf
                                     @method('DELETE')
                                     <button class="text-secondary delete-btn btn">
@@ -178,6 +178,9 @@
 @push('script')
 
 <script>
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this Visitor?');
+    }
     $(document).ready(function () {
         $('#searchName').on('keyup', function () {
             let query = $(this).val();
