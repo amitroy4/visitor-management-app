@@ -29,6 +29,8 @@ Route::delete('/dashboard/destroy/{id}', [VisitorController::class, 'destroy'])-
 Route::get('/dashboard/visitor/edit', [VisitorController::class, 'edit'])->name('visitor.edit');
 Route::post('/dashboard/visitor/update', [VisitorController::class, 'update'])->name('visitor.update');
 Route::get('/dashboard/visitor/search', [VisitorController::class, 'search'])->name('visitor.search');
+Route::get('/dashboard/visitor/checkout/search', [VisitorController::class, 'checkoutSearch'])->name('visitor.checkout.search');
+Route::post('/dashboard/visitor/checkout/{id}', [VisitorController::class, 'checkout'])->name('visitor.checkout');
 
 
 require __DIR__.'/auth.php';

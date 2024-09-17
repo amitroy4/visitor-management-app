@@ -14,6 +14,45 @@ class VisitorController extends Controller
         return view('checkin'); // Return the view for the form
     }
 
+
+// checkout search
+
+    public function checkoutSearch(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Search the database for matching results
+        $results = Visitor::where('name', 'LIKE', "%{$query}%")->orWhere('contact_number', 'LIKE', "%{$query}%")->get();
+
+        // Return results as JSON
+        return response()->json($results);
+    }
+
+    // Check Out
+    public function checkout(string $id)
+    {
+        // dd($id);
+        // Find the visitor by ID
+        $visitor = Visitor::findOrFail($id);
+
+        // dd($visitor);
+
+        // Update the name field
+        $visitor->checkout = now()->format('h:i A');
+
+        // Save the changes
+        $visitor->save();
+
+        // Return a success response
+        // return response()->json([
+        //     'message' => 'Visitor name updated successfully!',
+        //     'data' => $visitor,
+        // ]);
+        return redirect()->back()->with('success', 'Guest check-in recorded successfully!');
+    }
+
+
+
     // Store form data
     public function store(Request $request)
     {
@@ -81,10 +120,6 @@ class VisitorController extends Controller
 
 
 
-
-
-
-
     public function destroy(string $id)
     {
         $visitor= Visitor::find($id);
@@ -93,6 +128,9 @@ class VisitorController extends Controller
         return redirect()->route('dashboard');
 
     }
+
+
+
     public function edit(Request $request)
     {
         // Process the request data

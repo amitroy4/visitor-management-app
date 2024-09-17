@@ -19,8 +19,17 @@
         }
 
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css" integrity="sha512-B46MVOJpI6RBsdcU307elYeStF2JKT87SsHZfRSkjVi4/iZ3912zXi45X5/CBr/GbCyLx6M1GQtTKYRd52Jxgw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css"
+        integrity="sha512-B46MVOJpI6RBsdcU307elYeStF2JKT87SsHZfRSkjVi4/iZ3912zXi45X5/CBr/GbCyLx6M1GQtTKYRd52Jxgw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/fontawesome.min.js"
+        integrity="sha512-NeFv3hB6XGV+0y96NVxoWIkhrs1eC3KXBJ9OJiTFktvbzJ/0Kk7Rmm9hJ2/c2wJjy6wG0a0lIgehHjCTDLRwWw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -105,7 +114,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">চেক আউট</h5>
@@ -114,14 +123,30 @@
                 <div class="modal-body">
                     <div>
                         <div class="form-group mx-sm-3 d-flex justify-content-around">
-                            <input type="text" class="form-control" id="searchName" placeholder="নাম/মোবাইল নাম্বার">
-                            <button type="button" class="btn btn-primary ms-2"> <i class="fa-solid fa-magnifying-glass"></i></button>
+                            <input type="text" class="form-control" id="searchNamePhoneNumber"
+                                placeholder="নাম/মোবাইল নাম্বার">
+                            <button type="submit" class="btn btn-primary ms-2" id="searchNamePhoneNumberBtn"> <i
+                                    class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
+                        <table class="table table-striped table-to-convert" id="table-to-excel">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">তারিখ</th>
+                                    <th scope="col">নাম</th>
+                                    <th scope="col">মোবাইল নাম্বার</th>
+                                    <th scope="col">অ্যাপার্টমেন্ট</th>
+                                    <th scope="col">ইউনিট নাম্বার</th>
+                                    <th scope="col">চেক ইন</th>
+                                    <th scope="col">চেক আউট</th>
+                                </tr>
+                            </thead>
+                            <tbody id="searchResults">
+
+                            </tbody>
+
+                        </table>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
@@ -215,9 +240,59 @@
             });
         });
 
+    $(document).ready(function() {
+        $('#searchNamePhoneNumberBtn').click(function () {
+            var query = $('#searchNamePhoneNumber').val();
+
+            console.log('got namenumber:',query);
+
+
+            // Perform AJAX request to the server
+            $.ajax({
+                url: "{{ route('visitor.checkout.search') }}",
+                method: 'GET',
+                data: {
+                    query: query
+                },
+                success: function (response) {
+                    // Clear previous results
+                    $('#searchResults').empty();
+
+                    // Display the search results
+                    if (response.length > 0) {
+                        response.reverse().forEach(function (visitor) {
+                            $('#searchResults').append(`<tr>
+                            <th >${ visitor.id }</th>
+                            <td>${ visitor.visit_date }</td>
+                            <td>${ visitor.name }</td>
+                            <td>${ visitor.contact_number }</td>
+                            <td>${ visitor.appartment }</td>
+                            <td>${visitor.unit_number }</td>
+                            <td>${ visitor.checkin }</td>
+                            <td>
+                                <div class="d-flex justify-content-around">
+                                    <!-- Button trigger modal -->
+                                    <form action="{{route('visitor.checkout','')}}/${visitor.id}" method="POST">
+                                        @csrf
+                                        @method('Post')
+                                        <button class="text-secondary delete-btn btn">
+                                            <i class="fa-duotone fa-solid fa-calendar-check text-danger"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr> `);
+                        });
+                    } else {
+                        $('#searchResults').append('<p>No results found</p>');
+                    }
+                }
+            });
+        });
+});
 
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/fontawesome.min.js" integrity="sha512-NeFv3hB6XGV+0y96NVxoWIkhrs1eC3KXBJ9OJiTFktvbzJ/0Kk7Rmm9hJ2/c2wJjy6wG0a0lIgehHjCTDLRwWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </body>
 
 </html>
