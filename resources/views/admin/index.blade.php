@@ -192,7 +192,7 @@
                     let rows = '';
                     console.log(data);
 
-                    $.each(data, function (index, visitor) {
+                    $.each(data.reverse(), function (index, visitor) {
                         rows += `
                             <tr>
                             <th scope="row">${ visitor.id }</th>
@@ -372,21 +372,6 @@
         }
         return window.btoa(binary); // Convert to base64
     }
-
-
-    // Jquery live search
-    // $(document).ready(function(){
-    //     $("#searchName").keyup(function(){
-    //         _this = this;
-    //         $.each($("#searchTable tr"), function() {
-    //             if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1){
-    //                 $(this).hide();
-    //             }else{
-    //                 $(this).show();
-    //             }
-    //         });
-    //     });
-    // });
 
 
 </script>
