@@ -19,6 +19,8 @@
         }
 
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/fontawesome.min.css" integrity="sha512-B46MVOJpI6RBsdcU307elYeStF2JKT87SsHZfRSkjVi4/iZ3912zXi45X5/CBr/GbCyLx6M1GQtTKYRd52Jxgw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -27,10 +29,10 @@
         <div class='position-absolute top-50 start-50 translate-middle' style='width:50%'>
             <div class=''>
                 <div class="mb-3 text-secondary d-flex justify-content-end ">
-                    <a href="{{route('dashboard')}}">
-                        <button type="button" class="btn btn-dark fw-semibold fs-8 shadow d-flex align-items-end "
-                            style='margin-top:5%'>Login</button>
-                    </a>
+
+                    <button type="button" class="btn btn-dark fw-semibold fs-8 shadow d-flex align-items-end "
+                        style='margin-top:5%' data-bs-toggle="modal" data-bs-target="#exampleModal">চেক আউট</button>
+
                 </div>
                 <div class='rounded-4 shadow p-3 mb-5 bg-body-tertiary bg-light'>
 
@@ -98,6 +100,36 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal for Check Out Popup --}}
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">চেক আউট</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="form-group mx-sm-3 d-flex justify-content-around">
+                            <input type="text" class="form-control" id="searchName" placeholder="নাম/মোবাইল নাম্বার">
+                            <button type="button" class="btn btn-primary ms-2"> <i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
@@ -183,7 +215,9 @@
             });
         });
 
+
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/fontawesome.min.js" integrity="sha512-NeFv3hB6XGV+0y96NVxoWIkhrs1eC3KXBJ9OJiTFktvbzJ/0Kk7Rmm9hJ2/c2wJjy6wG0a0lIgehHjCTDLRwWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 
 </html>

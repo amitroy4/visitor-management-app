@@ -14,14 +14,15 @@
         <h5 class="card-header">
             <div class="row justify-content-between ">
                 <div class="form-group mx-sm-3">
-                    <input type="text" class="form-control" id="searchName" placeholder="Name">
+                    <label class="form-label">নাম:</label>
+                    <input type="text" class="form-control" id="searchName" placeholder="নাম">
                 </div>
                 <div class="form-group mx-sm-3">
-                    <label for="inputPassword2" class="sr-only">Search</label>
-                    <input type="text" class="form-control " id="search" placeholder="Search">
+                    <label class="form-labe">মোবাইল নাম্বার:</label>
+                    <input type="text" class="form-control " id="search" placeholder="মোবাইল নাম্বার">
                 </div>
                 <div class="form-group mx-sm-3">
-                    <label for="inputPassword2" class="sr-only">Search</label>
+                    <label class="form-labe">Search</label>
                     <input type="text" class="form-control " id="search" placeholder="Search">
                 </div>
                 <div>
@@ -178,12 +179,63 @@
 
 <script>
     $(document).ready(function () {
-        let idpass;
+        $('#searchName').on('keyup', function () {
+            let query = $(this).val();
+
+            $.ajax({
+                url: "{{ route('visitor.search') }}",
+                method: 'GET',
+                data: {
+                    query: query
+                },
+                success: function (data) {
+                    let rows = '';
+                    console.log(data);
+
+                    $.each(data, function (index, visitor) {
+                        rows += `
+                            <tr>
+                            <th scope="row">${ visitor.id }</th>
+                            <td>${ visitor.visit_date }</td>
+                            <td>${ visitor.name }</td>
+                            <td>${ visitor.contact_number }</td>
+                            <td>${visitor.purposse_of_visit }</td>
+                            <td>${ visitor.appartment }</td>
+                            <td>${visitor.unit_number }</td>
+                            <td>${ visitor.checkin }</td>
+                            <td>${ visitor.checkout }</td>
+                            <td>${ visitor.visitor_number }</td>
+                            <td>
+                                <div class="d-flex justify-content-around">
+                                    <!-- Button trigger modal -->
+
+                                    <button class="text-primary editModal btn" data-toggle="modal" type="button"
+                                        data-target="#exampleModal" data-visitor-id="${visitor.id}">
+                                        <i class="fa-solid fa-pen-to-square text-primary"></i>
+                                    </button>
+                                    <form action="{{route('visitor.destroy','')}}/${visitor.id}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="text-secondary delete-btn btn">
+                                            <i class="fa-solid fa-trash-can text-danger"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr> `;
+                    });
+                    $('.table-to-convert tbody').html(rows);
+                }
+            });
+        });
 
         $('.editModal').on('click', function (event) {
             event.preventDefault();
+            console.log('clicked');
+
             var visitorId = $(this).data('visitor-id');
-            window.alert(visitorId);
+            console.log(visitorId);
+            // window.alert(visitorId);
             $.ajax({
                 url: '{{ route("visitor.edit") }}',
                 type: 'get',
@@ -335,54 +387,7 @@
     //         });
     //     });
     // });
-    $('#searchName').on('keyup', function () {
-        let query = $(this).val();
 
-        $.ajax({
-            url: "{{ route('visitor.search') }}",
-            method: 'GET',
-            data: {
-                query: query
-            },
-            success: function (data) {
-                let rows = '';
-                $.each(data, function (index, visitor) {
-                    rows += `
-                        <tr>
-                        <th scope="row">${ visitor.id }</th>
-                        <td>${ visitor.visit_date }</td>
-                        <td>${ visitor.name }</td>
-                        <td>${ visitor.contact_number }</td>
-                        <td>${visitor.purposse_of_visit }</td>
-                        <td>${ visitor.appartment }</td>
-                        <td>${visitor.unit_number }</td>
-                        <td>${ visitor.checkin }</td>
-                        <td>${ visitor.checkout }</td>
-                        <td>${ visitor.visitor_number }</td>
-                        <td>
-                            <div class="d-flex justify-content-around">
-                                <!-- Button trigger modal -->
-
-                                <button class="text-primary editModal btn" data-toggle="modal"
-                                    data-target="#exampleModal" data-visitor-id="${visitor.id}">
-                                    <i class="fa-solid fa-pen-to-square text-primary"></i>
-                                    ${visitor.id}
-                                </button>
-                                <form action="{{route('visitor.destroy','')}}/${visitor.id}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="text-secondary delete-btn btn">
-                                        <i class="fa-solid fa-trash-can text-danger"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr> `;
-                });
-                $('.table-to-convert tbody').html(rows);
-            }
-        });
-    });
 
 </script>
 
