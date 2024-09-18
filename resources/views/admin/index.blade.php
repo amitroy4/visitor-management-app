@@ -12,18 +12,16 @@
 
     <div class="card">
         <h5 class="card-header">
-            <div class="row justify-content-between ">
-                <div class="form-group mx-sm-3">
-                    <label class="form-label">নাম:</label>
+            <div class="row justify-content-between pt-2">
+                <div class="form-group mx-sm-3 d-flex justify-content-around ">
+                    <label class="form-label mt-2">নাম:</label>
                     <input type="text" class="form-control" id="searchName" placeholder="নাম">
                 </div>
-                <div class="form-group mx-sm-3">
-                    <label class="form-labe">ডেট:</label>
+                <div class="form-group mx-sm-3 d-flex justify-content-around ">
+                    <label class="form-labe mt-2">ডেট:</label>
                     <input type="date" class="form-control " id="searchDate" placeholder="ডেট">
                 </div>
                 <div class="form-group mx-sm-3">
-                    <label class="form-labe">Search</label>
-                    <input type="text" class="form-control " id="search" placeholder="Search">
                 </div>
                 <div>
                     <button onclick="exportToPDF()" class="btn btn-info">Export to PDF</button> <button
