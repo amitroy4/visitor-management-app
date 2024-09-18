@@ -38,7 +38,7 @@ class VisitorController extends Controller
         // dd($visitor);
 
         // Update the name field
-        $visitor->checkout = now()->format('h:i A');
+        $visitor->checkout = now()->format('H:m');
 
         // Save the changes
         $visitor->save();
