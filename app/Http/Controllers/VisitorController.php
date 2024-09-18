@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use DateTime;
-use DateTimeZone;
+use Mpdf\Mpdf;
 
+use DateTimeZone;
 use Carbon\Carbon;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
@@ -147,6 +148,34 @@ class VisitorController extends Controller
         $visitors = Visitor::where('name', 'LIKE', "%{$query}%")->orwhere('visit_date', 'LIKE', "%{$query}%")->get(); // Adjust 'column_name' and 'YourModel'
 
         return response()->json($visitors);
+    }
+
+
+    public function generatePdf(Request $request)
+    {
+
+        // Extract HTML from request
+        $html = $request->input('html');
+
+        // Create an mPDF instance
+        $mpdf = new Mpdf([
+            'fontDir' => [public_path('admin')],
+            'fontdata' => [
+                'nikosh' => [
+                    'R' => 'Nikosh.ttf',
+                ],
+            ],
+            'default_font' => 'nikosh',
+            'format'                     => 'A4',
+        ]);
+
+        // Write HTML to mPDF
+        $mpdf->WriteHTML($html);
+
+        // Output PDF as a stream
+        return response($mpdf->Output('', 'S'), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="table_example.pdf"');
     }
 
 }

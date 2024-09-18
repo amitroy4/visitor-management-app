@@ -31,6 +31,7 @@ Route::post('/dashboard/visitor/update', [VisitorController::class, 'update'])->
 Route::get('/dashboard/visitor/search', [VisitorController::class, 'search'])->name('visitor.search');
 Route::get('/dashboard/visitor/checkout/search', [VisitorController::class, 'checkoutSearch'])->name('visitor.checkout.search');
 Route::post('/dashboard/visitor/checkout/{id}', [VisitorController::class, 'checkout'])->name('visitor.checkout');
+Route::post('/dashboard/visitor/generatePdf', [VisitorController::class, 'generatePdf'])->name('visitor.generatePdf');
 
 
 require __DIR__.'/auth.php';

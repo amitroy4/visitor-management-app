@@ -37,16 +37,16 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">তারিখ</th>
-                        <th scope="col">নাম</th>
-                        <th scope="col">মোবাইল নাম্বার</th>
-                        <th scope="col">পরিদর্শনের উদ্দেশ্য</th>
-                        <th scope="col">অ্যাপার্টমেন্ট</th>
-                        <th scope="col">ইউনিট নাম্বার</th>
-                        <th scope="col">চেক ইন</th>
-                        <th scope="col">চেক আউট</th>
-                        <th scope="col">ভিজিটর নাম্বার</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" style="font-family: 'nikosh';">তারিখ</th>
+                        <th scope="col" style="font-family: 'nikosh';">নাম</th>
+                        <th scope="col" style="font-family: 'nikosh';">মোবাইল নাম্বার</th>
+                        <th scope="col" style="font-family: 'nikosh';">পরিদর্শনের উদ্দেশ্য</th>
+                        <th scope="col" style="font-family: 'nikosh';">অ্যাপার্টমেন্ট</th>
+                        <th scope="col" style="font-family: 'nikosh';">ইউনিট নাম্বার</th>
+                        <th scope="col" style="font-family: 'nikosh';">চেক ইন</th>
+                        <th scope="col" style="font-family: 'nikosh';">চেক আউট</th>
+                        <th scope="col" style="font-family: 'nikosh';">ভিজিটর নাম্বার</th>
+                        <th scope="col" style="font-family: 'nikosh';">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -354,49 +354,100 @@
         XLSX.writeFile(wb, 'TableData.xlsx');
     }
 
-    async function exportToPDF() {
-        const {
-            jsPDF
-        } = window.jspdf;
-        const doc = new jsPDF();
+    // async function exportToPDF() {
+    //     const {
+    //         jsPDF
+    //     } = window.jspdf;
+    //     const doc = new jsPDF();
 
-        // Get table data
-        const table = document.querySelector('.table-to-convert');
-        const rows = Array.from(table.querySelectorAll('tbody tr'));
+    //     // Get table data
+    //     const table = document.querySelector('.table-to-convert');
+    //     const rows = Array.from(table.querySelectorAll('tbody tr'));
 
-        // Extract data, excluding the last column
-        const data = rows.map(row => {
-            const cells = Array.from(row.querySelectorAll('td, th'));
-            return cells.slice(0, -1).map(cell => cell.textContent.trim());
-        });
+    //     // Extract data, excluding the last column
+    //     const data = rows.map(row => {
+    //         const cells = Array.from(row.querySelectorAll('td, th'));
+    //         return cells.slice(0, -1).map(cell => cell.textContent.trim());
+    //     });
 
-        // Get header data
-        const headers = Array.from(table.querySelectorAll('thead th'))
-            .slice(0, -1)
-            .map(header => header.textContent.trim());
+    //     // Get header data
+    //     const headers = Array.from(table.querySelectorAll('thead th'))
+    //     .slice(0, -1)
+    //     .map(header => header.textContent.trim());
 
 
-        // Add the custom Bangla font (base64-encoded font string)
-        const base64Font = await fetchFont("/admin/TiroBangla-Regular.ttf"); // Path to the TTF file
-        doc.addFileToVFS("Nikosh.ttf", base64Font);
-        doc.addFont("Nikosh.ttf", "Nikosh", "normal");
+    //     // Add the custom Bangla font (base64-encoded font string)
+    //     const base64Font = await fetchFont("/admin/TiroBangla-Regular.ttf"); // Path to the TTF file
+    //     doc.addFileToVFS("Nikosh.ttf", base64Font);
+    //     doc.addFont("Nikosh.ttf", "Nikosh", "normal");
 
-        // Set the font for Bangla text
-        doc.setFont("Nikosh");
+    //     // Set the font for Bangla text
+    //     doc.setFont("Nikosh");
 
-        // Render the table to the PDF
-        doc.autoTable({
-            head: [
-                headers
-            ],
-            body: data,
-            styles: {
-                font: 'Nikosh'
+    //     // Render the table to the PDF
+    //     doc.autoTable({
+    //         head: [
+    //             headers
+    //         ],
+    //         body: data,
+    //         styles: {
+    //             font: 'Nikosh'
+    //         }
+    //     });
+
+    //     // Save the generated PDF
+    //     doc.save('TableData.pdf');
+    // }
+
+
+    function exportToPDF() {
+        // Get the table element
+        var table = document.getElementById('table-to-excel');
+
+        // Loop through each row of the table
+        for (var i = 0; i < table.rows.length; i++) {
+            var row = table.rows[i];
+            // Remove the last cell from each row
+            row.deleteCell(-1);
+        }
+
+
+        for (var i = 0; i < table.rows.length; i++) {
+            var row = table.rows[i];
+
+            // Apply different background colors for odd and even rows
+            if (i % 2 === 0) {
+                // Even row - apply color 1
+                row.style.backgroundColor = "#e8e9eb"; // Light gray, you can change the color
+            } else {
+                // Odd row - apply color 2
+                row.style.backgroundColor = "#ffffff"; // White, you can change the color
             }
-        });
+        }
 
-        // Save the generated PDF
-        doc.save('TableData.pdf');
+        // Now get the updated outer HTML without the last column
+        var tableHtml = table.outerHTML;
+
+        // Send HTML to the server via AJAX
+        fetch('/dashboard/visitor/generatePdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    html: tableHtml
+                })
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                // Create a link element and click it to download the PDF
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'General_report.pdf';
+                link.click();
+            })
+            .catch(error => console.error('Error:', error));
     }
 
     // Helper function to load the TTF file and convert it to base64
