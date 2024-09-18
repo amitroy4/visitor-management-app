@@ -171,7 +171,7 @@
 
             // Get day, month, and year individually
             var day = String(today.getDate()).padStart(2, '0');
-            var month = today.getMonth(); // Get the month (zero-indexed)
+            var month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
             var year = today.getFullYear();
             var formattedDate = year + '-' + month + '-' + day;
 

@@ -18,8 +18,8 @@
                     <input type="text" class="form-control" id="searchName" placeholder="নাম">
                 </div>
                 <div class="form-group mx-sm-3">
-                    <label class="form-labe">মোবাইল নাম্বার:</label>
-                    <input type="text" class="form-control " id="search" placeholder="মোবাইল নাম্বার">
+                    <label class="form-labe">ডেট:</label>
+                    <input type="date" class="form-control " id="searchDate" placeholder="ডেট">
                 </div>
                 <div class="form-group mx-sm-3">
                     <label class="form-labe">Search</label>
@@ -62,7 +62,8 @@
                         <td>{{ $visitor->appartment }}</td>
                         <td>{{ $visitor->unit_number }}</td>
                         <td>{{ Carbon\Carbon::parse($visitor->checkin)->format('g:i A') }}</td>
-                        <td>{{ $visitor->checkout ? Carbon\Carbon::parse($visitor->checkout)->format('g:i A'): 'N/A' }}</td>
+                        <td>{{ $visitor->checkout ? Carbon\Carbon::parse($visitor->checkout)->format('g:i A'): 'N/A' }}
+                        </td>
                         <td>{{ $visitor->visitor_number }}</td>
                         <td>
                             <div class="d-flex justify-content-around">
@@ -179,40 +180,27 @@
 @push('script')
 
 <script>
-    function confirmDelete() {
-        return confirm('Are you sure you want to delete this Visitor?');
-    }
-    $(document).ready(function () {
-        $('#searchName').on('keyup', function () {
-            let query = $(this).val();
+    function handleTable(data) {
+        let rows = '';
+        console.log(data);
 
-            $.ajax({
-                url: "{{ route('visitor.search') }}",
-                method: 'GET',
-                data: {
-                    query: query
-                },
-                success: function (data) {
-                    let rows = '';
-                    console.log(data);
-
-                    $.each(data.reverse(), function (index, visitor) {
-                        // Convert checkin and checkout times to 12-hour format with AM/PM
-                        const checkinTime = new Date(
-                                `1970-01-01T${visitor.checkin}Z`)
-                            .toLocaleTimeString('en-US', {
-                                hour: 'numeric',
-                                minute: 'numeric',
-                                hour12: true
-                            });
-                        const checkoutTime = new Date(
-                                `1970-01-01T${visitor.checkout}Z`)
-                            .toLocaleTimeString('en-US', {
-                                hour: 'numeric',
-                                minute: 'numeric',
-                                hour12: true
-                            });
-                        rows += `
+        $.each(data.reverse(), function (index, visitor) {
+            // Convert checkin and checkout times to 12-hour format with AM/PM
+            const checkinTime = new Date(
+                    `1970-01-01T${visitor.checkin}Z`)
+                .toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                });
+            const checkoutTime = new Date(
+                    `1970-01-01T${visitor.checkout}Z`)
+                .toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true
+                });
+            rows += `
                             <tr>
                             <th scope="row">${ visitor.id }</th>
                             <td>${ visitor.visit_date }</td>
@@ -242,8 +230,41 @@
                                 </div>
                             </td>
                         </tr> `;
-                    });
-                    $('.table-to-convert tbody').html(rows);
+        });
+        $('.table-to-convert tbody').html(rows);
+    }
+
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this Visitor?');
+    }
+    $(document).ready(function () {
+        $('#searchName').on('keyup', function () {
+            let query = $(this).val();
+
+            $.ajax({
+                url: "{{ route('visitor.search') }}",
+                method: 'GET',
+                data: {
+                    query: query
+                },
+                success: function (data) {
+                    handleTable(data)
+                }
+            });
+        });
+        $('#searchDate').on('change', function () {
+            let query = $(this).val();
+            console.log(query);
+
+
+            $.ajax({
+                url: "{{ route('visitor.search') }}",
+                method: 'GET',
+                data: {
+                    query: query
+                },
+                success: function (data) {
+                    handleTable(data)
                 }
             });
         });
