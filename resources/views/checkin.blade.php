@@ -173,30 +173,7 @@
             var day = String(today.getDate()).padStart(2, '0');
             var month = today.getMonth(); // Get the month (zero-indexed)
             var year = today.getFullYear();
-
-            // Convert the day and year into Bangla numerals
-            var banglaNumbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-
-            function convertToBanglaNumerals(number) {
-                return number.toString().split('').map(function (digit) {
-                    return banglaNumbers[digit];
-                }).join('');
-            }
-
-            // Bangla month names
-            var banglaMonths = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
-                'জুলাই', 'অগাস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
-            ];
-
-            // Convert day and year to Bangla
-            var banglaDay = convertToBanglaNumerals(day);
-            var banglaYear = convertToBanglaNumerals(year);
-
-            // Get the Bangla month name
-            var banglaMonth = banglaMonths[month];
-
-            // Format the date as Bangla DD-MM-YYYY
-            var formattedDate = banglaDay + ' ' + banglaMonth + ',' + banglaYear;
+            var formattedDate = year + '-' + month + '-' + day;
 
             // Set the value of the date input field to the current date
             dateInput.value = formattedDate;
