@@ -222,7 +222,7 @@
                             <td>${ visitor.appartment }</td>
                             <td>${visitor.unit_number }</td>
                             <td>${ checkinTime }</td>
-                            <td>${ checkoutTime }</td>
+                            <td>${ (checkoutTime=="Invalid Date")?"N/A": checkoutTime}</td>
                             <td>${ visitor.visitor_number }</td>
                             <td>
                                 <div class="d-flex justify-content-around">
