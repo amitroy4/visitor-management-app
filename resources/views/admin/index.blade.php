@@ -62,7 +62,7 @@
                         <td>{{ $visitor->appartment }}</td>
                         <td>{{ $visitor->unit_number }}</td>
                         <td>{{ Carbon\Carbon::parse($visitor->checkin)->format('g:i A') }}</td>
-                        <td>{{ Carbon\Carbon::parse($visitor->checkout)->format('g:i A') }}</td>
+                        <td>{{ $visitor->checkout ? Carbon\Carbon::parse($visitor->checkout)->format('g:i A'): 'N/A' }}</td>
                         <td>{{ $visitor->visitor_number }}</td>
                         <td>
                             <div class="d-flex justify-content-around">
@@ -72,7 +72,8 @@
                                     data-target="#exampleModal" data-visitor-id="{{$visitor->id}}">
                                     <i class="fa-solid fa-pen-to-square text-primary"></i>
                                 </button>
-                                <form action="{{route('visitor.destroy',$visitor->id)}}" method="POST" onsubmit="return confirmDelete()">
+                                <form action="{{route('visitor.destroy',$visitor->id)}}" method="POST"
+                                    onsubmit="return confirmDelete()">
                                     @csrf
                                     @method('DELETE')
                                     <button class="text-secondary delete-btn btn">
@@ -196,6 +197,21 @@
                     console.log(data);
 
                     $.each(data.reverse(), function (index, visitor) {
+                        // Convert checkin and checkout times to 12-hour format with AM/PM
+                        const checkinTime = new Date(
+                                `1970-01-01T${visitor.checkin}Z`)
+                            .toLocaleTimeString('en-US', {
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                hour12: true
+                            });
+                        const checkoutTime = new Date(
+                                `1970-01-01T${visitor.checkout}Z`)
+                            .toLocaleTimeString('en-US', {
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                hour12: true
+                            });
                         rows += `
                             <tr>
                             <th scope="row">${ visitor.id }</th>
@@ -205,8 +221,8 @@
                             <td>${visitor.purposse_of_visit }</td>
                             <td>${ visitor.appartment }</td>
                             <td>${visitor.unit_number }</td>
-                            <td>${ visitor.checkin }</td>
-                            <td>${ visitor.checkout }</td>
+                            <td>${ checkinTime }</td>
+                            <td>${ checkoutTime }</td>
                             <td>${ visitor.visitor_number }</td>
                             <td>
                                 <div class="d-flex justify-content-around">
@@ -219,7 +235,7 @@
                                     <form action="{{route('visitor.destroy','')}}/${visitor.id}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="text-secondary delete-btn btn">
+                                        <button class="text-secondary delete-btn btn notifyBtnToaster">
                                             <i class="fa-solid fa-trash-can text-danger"></i>
                                         </button>
                                     </form>
@@ -375,7 +391,6 @@
         }
         return window.btoa(binary); // Convert to base64
     }
-
 
 </script>
 

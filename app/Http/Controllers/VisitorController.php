@@ -39,19 +39,12 @@ class VisitorController extends Controller
         $visitor = Visitor::findOrFail($id);
 
         // dd($visitor);
-
-        // Update the name field
         $currentTime = Carbon::now()->format('H:i:s');
         // $date = new DateTime($currentTime, new DateTimeZone('Asia/Dhaka'));
         $visitor->update([
             'checkout' => $currentTime
         ]);
-
-        // Return a success response
-        // return response()->json([
-        //     'message' => 'Visitor name updated successfully!',
-        //     'data' => $visitor,
-        // ]);
+        toastr()->success('Checkout complete!');
         return redirect()->back()->with('success', 'Guest check-in recorded successfully!');
     }
 
@@ -75,7 +68,7 @@ class VisitorController extends Controller
         // dd($request);
 
         Visitor::create($request->all());
-
+        toastr()->success('Checkin successfully!');
         return redirect()->back()->with('success', 'Guest check-in recorded successfully!');
     }
 
@@ -114,7 +107,7 @@ class VisitorController extends Controller
 
         // Save the changes
         $visitor->save();
-
+        toastr()->success('Data has been updated successfully!');
         // Return a success response
         return response()->json([
             'message' => 'Visitor name updated successfully!',
@@ -129,6 +122,7 @@ class VisitorController extends Controller
         $visitor= Visitor::find($id);
 
         $visitor->delete();
+        toastr()->success('Data has been Deleted successfully!');
         return redirect()->route('dashboard');
 
     }
