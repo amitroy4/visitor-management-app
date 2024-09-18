@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use DateTimeZone;
+
+use Carbon\Carbon;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
-
 use function Illuminate\Log\log;
 
 class VisitorController extends Controller
@@ -38,10 +41,11 @@ class VisitorController extends Controller
         // dd($visitor);
 
         // Update the name field
-        $visitor->checkout = now()->format('H:m');
-
-        // Save the changes
-        $visitor->save();
+        $currentTime = Carbon::now()->format('H:i:s');
+        // $date = new DateTime($currentTime, new DateTimeZone('Asia/Dhaka'));
+        $visitor->update([
+            'checkout' => $currentTime
+        ]);
 
         // Return a success response
         // return response()->json([

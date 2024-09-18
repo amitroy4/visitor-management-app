@@ -61,8 +61,8 @@
                         <td>{{ $visitor->purposse_of_visit }}</td>
                         <td>{{ $visitor->appartment }}</td>
                         <td>{{ $visitor->unit_number }}</td>
-                        <td>{{ $visitor->checkin }}</td>
-                        <td>{{ $visitor->checkout }}</td>
+                        <td>{{ Carbon\Carbon::parse($visitor->checkin)->format('g:i A') }}</td>
+                        <td>{{ Carbon\Carbon::parse($visitor->checkout)->format('g:i A') }}</td>
                         <td>{{ $visitor->visitor_number }}</td>
                         <td>
                             <div class="d-flex justify-content-around">
