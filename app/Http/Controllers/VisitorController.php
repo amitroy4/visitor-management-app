@@ -40,7 +40,7 @@ class VisitorController extends Controller
         $visitor = Visitor::findOrFail($id);
 
         // dd($visitor);
-        $currentTime = Carbon::now()->format('H:i:s');
+        $currentTime = Carbon::now()->format('H:i');
         // $date = new DateTime($currentTime, new DateTimeZone('Asia/Dhaka'));
         $visitor->update([
             'checkout' => $currentTime
