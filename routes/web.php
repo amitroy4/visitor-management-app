@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VisitorController;
 
 Route::get('/', function () {
-    return view('fontpage');
+    return view('frontpage');
 });
 
 Route::get('/checkin', function () {
