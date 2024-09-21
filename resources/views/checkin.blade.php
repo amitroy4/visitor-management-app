@@ -278,7 +278,8 @@
                             <td>${visitor.unit_number }</td>
                             <td>${ visitor.checkin }</td>
                             <td>
-                                <div class="d-flex justify-content-around">
+                             ${visitor.checkout === null ?
+                                `<div class="d-flex justify-content-around">
                                     <!-- Button trigger modal -->
                                     <form action="{{route('visitor.checkout','')}}/${visitor.id}" method="POST">
                                         @csrf
@@ -287,10 +288,10 @@
                                             <i class="fa-duotone fa-solid fa-calendar-check text-danger"></i>
                                         </button>
                                     </form>
-                                </div>
-                                <td>${ visitor.checkout }</td>
-
-
+                                </div>`
+                                : ` <button class="text-secondary delete-btn btn">
+                                          <i class="fa-duotone fa-solid fa-check text-success"></i>
+                                        </button>`}
                             </td>
                         </tr> `);
                         });
