@@ -6,7 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VisitorController;
 
 Route::get('/', function () {
-    return view('checkin');
+    return view('fontpage');
 });
 
 Route::get('/checkin', function () {
@@ -32,6 +32,9 @@ Route::get('/dashboard/visitor/search', [VisitorController::class, 'search'])->n
 Route::get('/dashboard/visitor/checkout/search', [VisitorController::class, 'checkoutSearch'])->name('visitor.checkout.search');
 Route::post('/dashboard/visitor/checkout/{id}', [VisitorController::class, 'checkout'])->name('visitor.checkout');
 Route::post('/dashboard/visitor/generatePdf', [VisitorController::class, 'generatePdf'])->name('visitor.generatePdf');
+Route::get('/frontpage', function () {
+    return view('frontpage');
+});
 
 
 require __DIR__.'/auth.php';

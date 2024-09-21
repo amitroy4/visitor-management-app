@@ -145,7 +145,7 @@ class VisitorController extends Controller
     {
         $query = $request->input('query');
 
-        $visitors = Visitor::where('name', 'LIKE', "%{$query}%")->orwhere('visit_date', 'LIKE', "%{$query}%")->get(); // Adjust 'column_name' and 'YourModel'
+        $visitors = Visitor::where('name', 'LIKE', "%{$query}%")->orwhere('unit_number', 'LIKE', "%{$query}%")->orwhere('visit_date', 'LIKE', "%{$query}%")->get(); // Adjust 'column_name' and 'YourModel'
 
         return response()->json($visitors);
     }

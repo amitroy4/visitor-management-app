@@ -5,8 +5,14 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        <div>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                    class="fas fa-download fa-sm text-white-50"></i> Download Call log</a>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                    class="fas fa-download fa-sm text-white-50"></i> Downnload visitor log</a>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                    class="fas fa-download fa-sm text-white-50"></i>Search</a>
+        </div>
     </div>
 
 
@@ -18,12 +24,14 @@
                     <input type="text" class="form-control" id="searchName" placeholder="নাম">
                 </div>
                 <div class="form-group mx-sm-3 d-flex justify-content-around p-2">
+                    <label class="form-label mt-2 mr-2" style="width: 190px;">ইউনিট নাম্বার:</label>
+                    <input type="text" class="form-control" id="unitNumber" placeholder="ইউনিট নাম্বার">
+                </div>
+                <div class="form-group mx-sm-3 d-flex justify-content-around p-2">
                     <label class="form-labe mt-2 mr-2">ডেট:</label>
                     <input type="date" class="form-control " id="searchDate" placeholder="ডেট">
                 </div>
-                <div class="form-group mx-sm-3">
-                </div>
-                <div class="ml-auto p-2">
+                <div class=" p-2">
                     <button onclick="exportToPDF()" class="btn btn-info">Export to PDF</button> <button
                         onclick="exportToExcel()" class="btn btn-secondary">Export to Excel</button>
                 </div>
@@ -237,6 +245,20 @@
     }
     $(document).ready(function () {
         $('#searchName').on('keyup', function () {
+            let query = $(this).val();
+
+            $.ajax({
+                url: "{{ route('visitor.search') }}",
+                method: 'GET',
+                data: {
+                    query: query
+                },
+                success: function (data) {
+                    handleTable(data)
+                }
+            });
+        });
+        $('#unitNumber').on('keyup', function () {
             let query = $(this).val();
 
             $.ajax({
