@@ -3,7 +3,9 @@
 use App\Models\Visitor;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResidentInfoController;
 use App\Http\Controllers\VisitorController;
+use App\Models\ResidentInfo;
 
 Route::get('/', function () {
     return view('frontpage');
@@ -18,13 +20,13 @@ Route::get('/dashboard', function () {
     return view('admin.index',compact('visitors'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/dashboard/residance', function () {
-    return view('admin.residance');
-})->middleware(['auth', 'verified'])->name('residance');
+Route::get('/dashboard/resident', function () {
+    return view('admin.resident');
+})->middleware(['auth', 'verified'])->name('resident');
 
-Route::get('/dashboard/residance/addresidance', function () {
-    return view('admin.addresidance');
-})->middleware(['auth', 'verified'])->name('addresidance');
+Route::get('/dashboard/resident/addresident', function () {
+    return view('admin.addresident');
+})->middleware(['auth', 'verified'])->name('addresident');
 
 
 Route::middleware('auth')->group(function () {
@@ -46,6 +48,8 @@ Route::post('/dashboard/visitor/generatePdf', [VisitorController::class, 'genera
 Route::get('/frontpage', function () {
     return view('frontpage');
 });
+
+Route::post('/user-info/store', [ResidentInfoController::class, 'create'])->name('resident.create');
 
 
 require __DIR__.'/auth.php';

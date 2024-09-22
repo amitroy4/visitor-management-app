@@ -62,7 +62,7 @@
 
             <!-- Nav Item - Residance Info -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{route('residance')}}">
+                <a class="nav-link" href="{{route('resident')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Residance</span></a>
             </li>
