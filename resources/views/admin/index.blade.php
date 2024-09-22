@@ -17,26 +17,26 @@
 
 
     <div class="card">
-        <h5 class="card-header">
+        <h7 class="card-header">
             <div class="row justify-content-between pt-2 d-flex">
                 <div class="form-group mx-sm-3 d-flex justify-content-around p-2">
-                    <label class="form-label mt-2 mr-2">নাম:</label>
                     <input type="text" class="form-control" id="searchName" placeholder="নাম">
+                    <button onclick="searchNameBtn()" class="btn btn-info ml-1 searchNameBtn">Submit</button>
                 </div>
                 <div class="form-group mx-sm-3 d-flex justify-content-around p-2">
-                    <label class="form-label mt-2 mr-2" style="width: 190px;">ইউনিট নাম্বার:</label>
                     <input type="text" class="form-control" id="unitNumber" placeholder="ইউনিট নাম্বার">
+                    <button onclick="searchUnitNumberBtn()" class="btn btn-info ml-1">Submit</button>
                 </div>
-                <div class="form-group mx-sm-3 d-flex justify-content-around p-2">
+                {{-- <div class="form-group mx-sm-3 d-flex justify-content-around p-2">
                     <label class="form-labe mt-2 mr-2">ডেট:</label>
                     <input type="date" class="form-control " id="searchDate" placeholder="ডেট">
-                </div>
+                </div> --}}
                 <div class=" p-2">
-                    <button onclick="exportToPDF()" class="btn btn-info">Export to PDF</button> <button
-                        onclick="exportToExcel()" class="btn btn-secondary">Export to Excel</button>
+                    <button onclick="exportToPDF()" class="btn btn-info">Export to PDF</button>
+                    <button onclick="exportToExcel()" class="btn btn-secondary">Export to Excel</button>
                 </div>
             </div>
-        </h5>
+        </h7>
 
 
         <div class="card-body">
@@ -186,27 +186,45 @@
 @push('script')
 
 <script>
-    function handleTable(data) {
-        let rows = '';
-        console.log(data);
 
-        $.each(data.reverse(), function (index, visitor) {
-            // Convert checkin and checkout times to 12-hour format with AM/PM
-            const checkinTime = new Date(
-                    `1970-01-01T${visitor.checkin}Z`)
-                .toLocaleTimeString('en-US', {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    hour12: true
-                });
-            const checkoutTime = new Date(
-                    `1970-01-01T${visitor.checkout}Z`)
-                .toLocaleTimeString('en-US', {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    hour12: true
-                });
-            rows += `
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this Visitor?');
+    }
+
+
+
+    function searchNameBtn() {
+        var query = $('#searchName').val();
+
+        console.log(query);
+        $.ajax({
+            url: "{{ route('visitor.nameSearch') }}",
+            method: 'GET',
+            data: {
+                query: query
+            },
+            success: function (data) {
+
+                let rows = '';
+                console.log(data);
+
+                $.each(data.reverse(), function (index, visitor) {
+                    // Convert checkin and checkout times to 12-hour format with AM/PM
+                    const checkinTime = new Date(
+                            `1970-01-01T${visitor.checkin}Z`)
+                        .toLocaleTimeString('en-US', {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                        });
+                    const checkoutTime = new Date(
+                            `1970-01-01T${visitor.checkout}Z`)
+                        .toLocaleTimeString('en-US', {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                        });
+                    rows += `
                             <tr>
                             <th scope="row">${ visitor.id }</th>
                             <td>${ visitor.visit_date }</td>
@@ -236,58 +254,89 @@
                                 </div>
                             </td>
                         </tr> `;
-        });
-        $('.table-to-convert tbody').html(rows);
-    }
+                });
+                $('.table-to-convert tbody').html(rows);
+                $('#searchName').val("");
 
-    function confirmDelete() {
-        return confirm('Are you sure you want to delete this Visitor?');
-    }
+            }
+        });
+    };
+
+
+
+
+    function searchUnitNumberBtn() {
+        var query = $('#unitNumber').val();
+
+        console.log(query);
+        $.ajax({
+            url: "{{ route('visitor.unitNumberSearch') }}",
+            method: 'GET',
+            data: {
+                query: query
+            },
+            success: function (data) {
+
+                let rows = '';
+                console.log(data);
+
+                $.each(data.reverse(), function (index, visitor) {
+                    // Convert checkin and checkout times to 12-hour format with AM/PM
+                    const checkinTime = new Date(
+                            `1970-01-01T${visitor.checkin}Z`)
+                        .toLocaleTimeString('en-US', {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                        });
+                    const checkoutTime = new Date(
+                            `1970-01-01T${visitor.checkout}Z`)
+                        .toLocaleTimeString('en-US', {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                        });
+                    rows += `
+                            <tr>
+                            <th scope="row">${ visitor.id }</th>
+                            <td>${ visitor.visit_date }</td>
+                            <td>${ visitor.name }</td>
+                            <td>${ visitor.contact_number }</td>
+                            <td>${visitor.purposse_of_visit }</td>
+                            <td>${ visitor.appartment }</td>
+                            <td>${visitor.unit_number }</td>
+                            <td>${ checkinTime }</td>
+                            <td>${ (checkoutTime=="Invalid Date")?"N/A": checkoutTime}</td>
+                            <td>${ visitor.visitor_number }</td>
+                            <td>
+                                <div class="d-flex justify-content-around">
+                                    <!-- Button trigger modal -->
+
+                                    <button class="text-primary editModal btn" data-toggle="modal" type="button"
+                                        data-target="#exampleModal" data-visitor-id="${visitor.id}">
+                                        <i class="fa-solid fa-pen-to-square text-primary"></i>
+                                    </button>
+                                    <form action="{{route('visitor.destroy','')}}/${visitor.id}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="text-secondary delete-btn btn notifyBtnToaster">
+                                            <i class="fa-solid fa-trash-can text-danger"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr> `;
+                });
+                $('.table-to-convert tbody').html(rows);
+                $('#unitNumber').val("");
+
+            }
+        });
+    };
+
+
     $(document).ready(function () {
-        $('#searchName').on('keyup', function () {
-            let query = $(this).val();
 
-            $.ajax({
-                url: "{{ route('visitor.search') }}",
-                method: 'GET',
-                data: {
-                    query: query
-                },
-                success: function (data) {
-                    handleTable(data)
-                }
-            });
-        });
-        $('#unitNumber').on('keyup', function () {
-            let query = $(this).val();
-
-            $.ajax({
-                url: "{{ route('visitor.search') }}",
-                method: 'GET',
-                data: {
-                    query: query
-                },
-                success: function (data) {
-                    handleTable(data)
-                }
-            });
-        });
-        $('#searchDate').on('change', function () {
-            let query = $(this).val();
-            console.log(query);
-
-
-            $.ajax({
-                url: "{{ route('visitor.search') }}",
-                method: 'GET',
-                data: {
-                    query: query
-                },
-                success: function (data) {
-                    handleTable(data)
-                }
-            });
-        });
 
         $('.editModal').on('click', function (event) {
             event.preventDefault();

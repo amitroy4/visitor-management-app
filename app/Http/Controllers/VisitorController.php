@@ -140,12 +140,34 @@ class VisitorController extends Controller
     }
 
 
+    // Search all
+    // public function search(Request $request)
+    // {
+    //     $query = $request->input('query');
+
+    //     $visitors = Visitor::where('name', 'LIKE', "%{$query}%")->orwhere('unit_number', 'LIKE', "%{$query}%")->orwhere('visit_date', 'LIKE', "%{$query}%")->get(); // Adjust 'column_name' and 'YourModel'
+
+    //     return response()->json($visitors);
+    // }
+
+
     // Search name
-    public function search(Request $request)
+    public function nameSearch(Request $request)
     {
         $query = $request->input('query');
 
-        $visitors = Visitor::where('name', 'LIKE', "%{$query}%")->orwhere('unit_number', 'LIKE', "%{$query}%")->orwhere('visit_date', 'LIKE', "%{$query}%")->get(); // Adjust 'column_name' and 'YourModel'
+        $visitors = Visitor::where('name', 'LIKE', "%{$query}%")->get();
+
+        return response()->json($visitors);
+    }
+
+
+    // Search uniteNumber
+    public function unitNumberSearch(Request $request)
+    {
+        $query = $request->input('query');
+
+        $visitors = Visitor::where('unit_number', 'LIKE', "%{$query}%")->get();
 
         return response()->json($visitors);
     }

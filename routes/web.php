@@ -28,7 +28,9 @@ Route::post('/visitor/store', [VisitorController::class, 'store'])->name('visito
 Route::delete('/dashboard/destroy/{id}', [VisitorController::class, 'destroy'])->name('visitor.destroy');
 Route::get('/dashboard/visitor/edit', [VisitorController::class, 'edit'])->name('visitor.edit');
 Route::post('/dashboard/visitor/update', [VisitorController::class, 'update'])->name('visitor.update');
-Route::get('/dashboard/visitor/search', [VisitorController::class, 'search'])->name('visitor.search');
+// Route::get('/dashboard/visitor/search', [VisitorController::class, 'search'])->name('visitor.search');
+Route::get('/dashboard/visitor/namesearch', [VisitorController::class, 'nameSearch'])->name('visitor.nameSearch');
+Route::get('/dashboard/visitor/unitnumbersearch', [VisitorController::class, 'unitNumberSearch'])->name('visitor.unitNumberSearch');
 Route::get('/dashboard/visitor/checkout/search', [VisitorController::class, 'checkoutSearch'])->name('visitor.checkout.search');
 Route::post('/dashboard/visitor/checkout/{id}', [VisitorController::class, 'checkout'])->name('visitor.checkout');
 Route::post('/dashboard/visitor/generatePdf', [VisitorController::class, 'generatePdf'])->name('visitor.generatePdf');
