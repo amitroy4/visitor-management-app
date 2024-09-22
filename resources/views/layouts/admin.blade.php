@@ -60,7 +60,14 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
+            <!-- Nav Item - Residance Info -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{route('residance')}}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Residance</span></a>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
         </ul>
         <!-- End of Sidebar -->

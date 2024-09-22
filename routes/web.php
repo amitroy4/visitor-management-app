@@ -18,6 +18,15 @@ Route::get('/dashboard', function () {
     return view('admin.index',compact('visitors'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/dashboard/residance', function () {
+    return view('admin.residance');
+})->middleware(['auth', 'verified'])->name('residance');
+
+Route::get('/dashboard/residance/addresidance', function () {
+    return view('admin.addresidance');
+})->middleware(['auth', 'verified'])->name('addresidance');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
