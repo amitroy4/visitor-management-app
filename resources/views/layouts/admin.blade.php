@@ -63,7 +63,7 @@
             <!-- Nav Item - Residance Info -->
             <li class="nav-item active">
                 <a class="nav-link" href="{{route('resident')}}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fa-solid fa-house-chimney"></i>
                     <span>Residance</span></a>
             </li>
             <!-- Divider -->

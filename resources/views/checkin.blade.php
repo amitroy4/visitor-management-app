@@ -268,7 +268,7 @@
 
                     // Display the search results
                     if (response.length > 0) {
-                        response.reverse().forEach(function (visitor) {
+                        response.slice(-2).reverse().forEach(function (visitor) {
                             $('#searchResults').append(`<tr>
                             <th >${ visitor.id }</th>
                             <td>${ visitor.visit_date }</td>
@@ -289,9 +289,9 @@
                                         </button>
                                     </form>
                                 </div>`
-                                : ` <button class="text-secondary delete-btn btn">
+                                : ` <div class="d-flex justify-content-around"><button class="text-secondary delete-btn btn">
                                           <i class="fa-duotone fa-solid fa-check text-success"></i>
-                                        </button>`}
+                                        </button></div>`}
                             </td>
                         </tr> `);
                         });

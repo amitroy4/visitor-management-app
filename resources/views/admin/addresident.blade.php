@@ -56,13 +56,18 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
+                                <label for="nid">Appartment</label>
+                                <input type="text" class="form-control" id="appartment" name="appartment"
+                                    placeholder="Enter Appartment">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
                                 <label for="nid">NID:</label>
                                 <input type="text" class="form-control" id="nid" name="nid"
                                     placeholder="Enter resident NID">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="occupation">Occupation:</label>
@@ -79,12 +84,20 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
-                                {{-- <label for="nid">NID:</label>
-                                <input type="text" class="form-control" id="nid" name="nid"
-                                    placeholder="Enter resident NID"> --}}
+                                <label for="nid">Unit Number</label>
+                                <input type="text" class="form-control" id="unitnumber" name="unitnumber"
+                                    placeholder="Enter Unit Number">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="nid">Floor Number</label>
+                                <input type="text" class="form-control" id="floornumber" name="floornumber"
+                                    placeholder="Enter Floor Number">
                             </div>
                         </div>
                     </div>
+
                     <h5>Emergency Information</h5>
                     <div class="row">
                         <div class="col-lg-4">

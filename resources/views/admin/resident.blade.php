@@ -35,6 +35,25 @@
 
 
         <div class="card-body">
+            <div class="d-flex justify-content-around">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Name" aria-label="Name">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">Go</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Phone Number" aria-label="Phone Number">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">Go</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Content Row -->
             <table class="table table-bordered">
                 <thead class="thead-light">

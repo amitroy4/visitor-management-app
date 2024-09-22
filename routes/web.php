@@ -49,7 +49,7 @@ Route::get('/frontpage', function () {
     return view('frontpage');
 });
 
-Route::post('/user-info/store', [ResidentInfoController::class, 'create'])->name('resident.create');
+// Route::post('/user-info/store', [ResidentInfoController::class, 'create'])->name('resident.create');
 
 
 require __DIR__.'/auth.php';
